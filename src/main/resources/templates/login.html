@@ -11,19 +11,13 @@
 
         <div th:if="${param.error}" class="alerta alerta-erro" role="alert">Usuário ou senha inválidos.</div>
         <div th:if="${param.logout}" class="alerta alerta-info" role="status">Você saiu do sistema.</div>
-        <div th:if="${param.recuperacao}" class="alerta alerta-info" role="status">
-            Código verificado. Esta é uma demonstração: a senha não foi alterada, entre com suas credenciais atuais.
-        </div>
 
         <form method="post" th:action="@{/login}">
             <label for="username">Usuário
                 <input type="text" id="username" name="username" autocomplete="username" required autofocus>
             </label>
 
-            <div class="rotulo-linha">
-                <label for="password">Senha</label>
-                <a th:href="@{/recuperar-senha}">Esqueci minha senha</a>
-            </div>
+            <label for="password">Senha</label>
             <div th:replace="~{fragments/layout :: campo-senha('password', 'password', 'current-password')}"></div>
 
             <button type="submit">Entrar</button>

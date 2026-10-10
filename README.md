@@ -4,7 +4,7 @@ MVP web para uma transportadora fictícia, a LogiTrack, que hoje controla a frot
 
 - **Agendamento de manutenções**: CRUD completo, com validação e regras de transição de status.
 - **Dashboard** com 5 métricas da frota, todas calculadas em SQL no PostgreSQL.
-- **Login** com Spring Security, botão para mostrar a senha e um esboço do fluxo "Esqueci minha senha".
+- **Login** com Spring Security e botão para mostrar a senha.
 - **Ambiente completo em Docker**, com um único comando.
 
 **Stack:** Java 21 · Spring Boot 3.5 (Web MVC, Data JPA, JDBC, Validation, Security) · Thymeleaf + Pico.css · PostgreSQL 16 · Flyway · Testcontainers · Docker multi-stage + Docker Compose · Maven Wrapper
@@ -127,9 +127,8 @@ PostgreSQL ─────── schema versionado pelo Flyway
 ```
 src/main/java/com/logitrack
 ├── config/        SecurityConfig: regras de acesso, login e usuário em memória
-├── controller/    DashboardController, ManutencaoController, LoginController,
-│                  RecuperacaoSenhaController, HomeController
-├── service/       DashboardService, ManutencaoService, VeiculoService, RecuperacaoSenhaService
+├── controller/    DashboardController, ManutencaoController, LoginController, HomeController
+├── service/       DashboardService, ManutencaoService, VeiculoService
 ├── repository/    ManutencaoRepository, VeiculoRepository (JPA), DashboardRepository (JDBC)
 ├── domain/        Manutencao, Veiculo (entidades), StatusManutencao, TipoVeiculo (enums)
 ├── dto/           ManutencaoForm (entrada), ManutencaoResumo, VeiculoOpcao (saída)
@@ -154,8 +153,6 @@ src/main/resources
 | Método | Rota | Descrição |
 |---|---|---|
 | GET | `/login` | Tela de login (pública) |
-| GET, POST | `/recuperar-senha` | Esboço de recuperação de senha: pede usuário/e-mail e "envia" um código (pública) |
-| POST | `/recuperar-senha/codigo` | Verifica o formato do código e volta ao login (pública) |
 | GET | `/dashboard?veiculoId=` | Dashboard; `veiculoId` opcional filtra o total de KM |
 | GET | `/manutencoes` | Lista de manutenções |
 | GET | `/manutencoes/nova` | Formulário de agendamento |
@@ -330,14 +327,7 @@ O escopo é um MVP com um CRUD e um painel. Páginas renderizadas no servidor pe
 Um SPA dobraria a infraestrutura (build de front, API REST, CORS, autenticação por token) sem ganho para o usuário neste estágio. Onde a interatividade ajuda (formulário em modal, confirmação de exclusão, indicadores de carregamento), um JavaScript pequeno e sem framework reaproveita o HTML que o próprio servidor renderiza. As camadas de service e DTO já isolam a regra de negócio, então expor uma API REST no futuro é acrescentar controllers, não reescrever.
 
 ### Spring Security com usuário em memória
-Login por formulário, senha com hash BCrypt e CSRF ligado. Toda rota exige autenticação, exceto `/login`, `/recuperar-senha/**`, os arquivos estáticos (`/css/**`, `/js/**`, favicon) e `/error`, então uma rota nova já nasce protegida. Logout e exclusões são POST com token. Para ter vários usuários, basta trocar o bean `UserDetailsService` por uma implementação que leia de uma tabela.
-
-**"Esqueci minha senha" é um esboço de interface:** nenhum e-mail é enviado e nenhuma senha é alterada, porque o usuário é único e fica em memória. O fluxo mostra:
-- o e-mail mascarado no domínio reservado `logitrack.example`;
-- a mensagem "se houver uma conta associada…", que não revela se o usuário existe;
-- a entrada do código de 6 dígitos e a opção de reenvio.
-
-Uma versão real geraria um código aleatório com validade, guardaria só o hash dele, limitaria tentativas e enviaria o e-mail ([RecuperacaoSenhaService](src/main/java/com/logitrack/service/RecuperacaoSenhaService.java)).
+Login por formulário, senha com hash BCrypt e CSRF ligado. Toda rota exige autenticação, exceto `/login`, os arquivos estáticos (`/css/**`, `/js/**`, favicon) e `/error`, então uma rota nova já nasce protegida. Logout e exclusões são POST com token. Para ter vários usuários, basta trocar o bean `UserDetailsService` por uma implementação que leia de uma tabela.
 
 ### Fuso horário fixo
 As métricas usam `CURRENT_DATE`, calculado no fuso da sessão do PostgreSQL. O driver JDBC define esse fuso a partir do fuso da JVM, e uma JVM em container roda em UTC por padrão. Sem ajuste, depois das 21h (horário de Brasília) o dashboard consideraria o dia seguinte. Por isso:

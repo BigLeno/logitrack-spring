@@ -549,7 +549,7 @@ td.numero, th.numero {
 }
 
 /* ==========================================================================
-   Telas de acesso (login e recuperação de senha)
+   Tela de acesso (login)
    ========================================================================== */
 .acesso {
     max-width: 26rem;
@@ -605,59 +605,6 @@ td.numero, th.numero {
     margin-bottom: 0;
 }
 
-.acesso-icone {
-    display: inline-flex;
-    margin-bottom: 1rem;
-    padding: .7rem;
-    border-radius: 50%;
-    background: var(--lt-destaque-suave);
-    color: var(--lt-destaque);
-}
-
-.acesso-icone .ico {
-    width: 1.4rem;
-    height: 1.4rem;
-}
-
-.acesso-voltar {
-    display: inline-block;
-    margin-top: 1.25rem;
-    font-size: .9rem;
-    text-decoration: none;
-}
-
-.acesso-reenviar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .35rem;
-    margin: 1rem 0 0;
-    font-size: .9rem;
-    color: var(--pico-muted-color);
-}
-
-.nota-demonstracao {
-    margin: 1rem 0 0;
-    font-size: .78rem;
-    color: var(--pico-muted-color);
-}
-
-/* rótulo da senha com o link "Esqueci minha senha" na mesma linha */
-.rotulo-linha {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: calc(var(--pico-spacing) * .375);
-}
-
-.rotulo-linha label {
-    margin: 0;
-}
-
-.rotulo-linha a {
-    font-size: .85rem;
-}
-
 /* campo de senha com o botão de olho dentro */
 .campo-senha {
     position: relative;
@@ -701,33 +648,6 @@ td.numero, th.numero {
 
 .mostrar-senha .se-oculta {
     display: inline-flex;
-}
-
-/* código de verificação: dígitos grandes e espaçados */
-.campo-codigo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: .5em;
-    text-align: center;
-    font-family: var(--pico-font-family-monospace);
-}
-
-/* botão com aparência de link ("Reenviar código") */
-.link-botao {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--pico-primary);
-    font-size: inherit;
-    text-decoration: underline;
-}
-
-.link-botao:hover,
-.link-botao:focus-visible {
-    background: none;
-    color: var(--pico-primary-hover);
 }
 
 /* Alertas */
@@ -934,15 +854,6 @@ dialog[open] > article {
     dialog[open] > article {
         animation: none;
     }
-}
-
-.acesso-cartao button.link-botao[type="submit"] {
-    width: auto;
-    margin: 0;
-}
-
-.acesso-cartao .subtitulo strong {
-    color: var(--pico-h1-color);
 }
 
 /* "X" no topo do cartão do formulário: só aparece dentro do modal */
