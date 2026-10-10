@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Ícones SVG em linha (traço herda a cor do texto). Uso: <svg th:replace="~{fragments/icones :: caminhao}"></svg> -->
+
+<svg th:fragment="caminhao" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M2 6h12v10H2z"/><path d="M14 9h4.5l3.5 3.5V16h-8z"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/>
+</svg>
+
+<svg th:fragment="velocimetro" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 14l4-5"/><path d="M3.5 18a9.5 9.5 0 1 1 17 0"/><circle cx="12" cy="14" r="1.2"/>
+</svg>
+
+<svg th:fragment="carteira" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="2.5" y="5" width="19" height="15" rx="2.5"/><path d="M2.5 9.5h19"/><path d="M16 15h2.5"/>
+</svg>
+
+<svg th:fragment="trofeu" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5.5h3V8a3 3 0 0 1-3 3"/><path d="M7 5.5H4V8a3 3 0 0 0 3 3"/><path d="M12 14v4"/><path d="M8 21h8"/>
+</svg>
+
+<svg th:fragment="barras" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 21h18"/><path d="M6 17v-6"/><path d="M12 17V5"/><path d="M18 17v-9"/>
+</svg>
+
+<svg th:fragment="calendario" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/>
+</svg>
+
+<svg th:fragment="seta" class="ico" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+</svg>
+</body>
+</html>

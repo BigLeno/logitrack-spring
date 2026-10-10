@@ -4,7 +4,13 @@
 <body>
 <main class="container login">
     <article>
-        <header><strong>LogiTrack</strong> · Gestão de frota</header>
+        <header>
+            <span class="marca">
+                <span class="marca-icone"><svg th:replace="~{fragments/icones :: caminhao}"></svg></span>
+                LogiTrack
+            </span>
+            <p class="subtitulo">Gestão de frota</p>
+        </header>
 
         <p th:if="${param.error}" class="erro-campo" role="alert">Usuário ou senha inválidos.</p>
         <p th:if="${param.logout}" role="status">Você saiu do sistema.</p>

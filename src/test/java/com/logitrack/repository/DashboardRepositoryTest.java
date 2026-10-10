@@ -144,6 +144,7 @@ class DashboardRepositoryTest {
             assertThat(m.modelo()).isEqualTo("Scania R500");
             assertThat(m.dataInicio()).isEqualTo(hoje.plusDays(1));
             assertThat(m.custoEstimado()).isEqualByComparingTo("999.90");
+            assertThat(m.diasAte()).isEqualTo(1);
         }
 
         @Test

@@ -10,17 +10,25 @@
 </head>
 <body>
 
-<header th:fragment="nav" class="container">
-    <nav>
+<!-- ativo: 'dashboard' ou 'manutencoes', para destacar o link da página atual -->
+<header th:fragment="nav(ativo)" class="topo">
+    <nav class="container">
         <ul>
-            <li><strong>LogiTrack</strong></li>
+            <li>
+                <a th:href="@{/dashboard}" class="marca">
+                    <span class="marca-icone"><svg th:replace="~{fragments/icones :: caminhao}"></svg></span>
+                    LogiTrack
+                </a>
+            </li>
         </ul>
         <ul>
-            <li><a th:href="@{/dashboard}">Dashboard</a></li>
-            <li><a th:href="@{/manutencoes}">Manutenções</a></li>
+            <li><a th:href="@{/dashboard}" th:classappend="${ativo == 'dashboard'} ? 'ativo'"
+                   th:attr="aria-current=${ativo == 'dashboard'} ? 'page'">Dashboard</a></li>
+            <li><a th:href="@{/manutencoes}" th:classappend="${ativo == 'manutencoes'} ? 'ativo'"
+                   th:attr="aria-current=${ativo == 'manutencoes'} ? 'page'">Manutenções</a></li>
             <li sec:authorize="isAuthenticated()">
                 <form method="post" th:action="@{/logout}" class="sair">
-                    <small sec:authentication="name">usuário</small>
+                    <span class="usuario" sec:authentication="name">usuário</span>
                     <button type="submit" class="secondary outline">Sair</button>
                 </form>
             </li>

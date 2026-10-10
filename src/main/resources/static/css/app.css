@@ -1,41 +1,166 @@
+/* ==========================================================================
+   Tokens: cores próprias por cima do Pico.css, com variante para tema escuro
+   ========================================================================== */
 :root {
     --pico-font-size: 100%;
+
+    /* destaque derivado da cor primária do Pico: acompanha o tema claro/escuro */
+    --lt-destaque: var(--pico-primary);
+    --lt-destaque-suave: color-mix(in srgb, var(--pico-primary) 12%, transparent);
+    --lt-leve: #0ea5e9;
+    --lt-pesado: #6366f1;
+    --lt-hoje: #c2410c;
+    --lt-hoje-fundo: rgba(234, 88, 12, .12);
+
+    --lt-sucesso-fundo: #e7f6ec;
+    --lt-sucesso-texto: #166534;
+    --lt-pendente-fundo: #fef3c7;
+    --lt-pendente-texto: #854d0e;
+    --lt-andamento-fundo: #dbeafe;
+    --lt-andamento-texto: #1e40af;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --lt-leve: #38bdf8;
+        --lt-pesado: #818cf8;
+        --lt-hoje: #fdba74;
+        --lt-hoje-fundo: rgba(251, 146, 60, .16);
+
+        --lt-sucesso-fundo: rgba(74, 222, 128, .14);
+        --lt-sucesso-texto: #86efac;
+        --lt-pendente-fundo: rgba(250, 204, 21, .14);
+        --lt-pendente-texto: #fde047;
+        --lt-andamento-fundo: rgba(96, 165, 250, .16);
+        --lt-andamento-texto: #93c5fd;
+    }
+}
+
+/* ==========================================================================
+   Topo e navegação
+   ========================================================================== */
+.topo {
+    border-bottom: 1px solid var(--pico-muted-border-color);
+    margin-bottom: 1.5rem;
+}
+
+nav .marca,
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    font-weight: 700;
+    color: var(--pico-h1-color);
+    text-decoration: none;
+}
+
+.marca-icone {
+    display: inline-flex;
+    padding: .35rem;
+    border-radius: .55rem;
+    background: var(--pico-primary-background);
+    color: var(--pico-primary-inverse);
+}
+
+.marca-icone .ico {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+nav a.ativo {
+    color: var(--pico-h1-color);
+    font-weight: 600;
+    box-shadow: inset 0 -2px 0 var(--lt-destaque);
+    border-radius: 0;
+}
+
+.sair {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+}
+
+.sair .usuario {
+    font-size: .85rem;
+    color: var(--pico-muted-color);
+}
+
+.sair button {
+    padding: .2rem .7rem;
+    font-size: .85rem;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Ícones SVG
+   ========================================================================== */
+.ico {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ==========================================================================
+   Elementos comuns
+   ========================================================================== */
 .cabecalho {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .cabecalho h1 {
     margin: 0;
 }
 
+.subtitulo {
+    margin: .25rem 0 0;
+    color: var(--pico-muted-color);
+}
+
 .alerta-sucesso {
     padding: .75rem 1rem;
     margin-bottom: 1rem;
     border-radius: var(--pico-border-radius);
-    background: #e6f4ea;
-    color: #1f5f32;
+    background: var(--lt-sucesso-fundo);
+    color: var(--lt-sucesso-texto);
 }
 
 .badge {
     display: inline-block;
-    padding: .1rem .55rem;
+    padding: .15rem .6rem;
     border-radius: 999px;
-    font-size: .8rem;
+    font-size: .78rem;
     font-weight: 600;
     white-space: nowrap;
 }
 
-.badge-PENDENTE { background: #fff4d6; color: #7a5a00; }
-.badge-EM_REALIZACAO { background: #dde8ff; color: #1f3f99; }
-.badge-CONCLUIDA { background: #e6f4ea; color: #1f5f32; }
+.badge-PENDENTE { background: var(--lt-pendente-fundo); color: var(--lt-pendente-texto); }
+.badge-EM_REALIZACAO { background: var(--lt-andamento-fundo); color: var(--lt-andamento-texto); }
+.badge-CONCLUIDA { background: var(--lt-sucesso-fundo); color: var(--lt-sucesso-texto); }
 
+.erro-campo {
+    color: var(--pico-del-color);
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+td.numero, th.numero {
+    text-align: right;
+}
+
+/* Ações da listagem (ícones de editar/excluir) */
 .acoes {
     display: flex;
     gap: .5rem;
@@ -67,76 +192,273 @@
     stroke-linejoin: round;
 }
 
-td.numero, th.numero {
-    text-align: right;
+/* ==========================================================================
+   Dashboard: cards de indicadores
+   ========================================================================== */
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.erro-campo {
-    color: var(--pico-del-color);
+.kpi {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 1.25rem;
 }
 
-.nowrap {
-    white-space: nowrap;
+.kpi-topo {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .9rem;
 }
 
-.metrica header,
-.grid-dashboard header {
+.kpi-icone {
+    display: inline-flex;
+    padding: .45rem;
+    border-radius: .6rem;
+    background: var(--lt-destaque-suave);
+    color: var(--lt-destaque);
+}
+
+.kpi-rotulo {
+    font-size: .8rem;
     font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--pico-muted-color);
 }
 
-.metrica .valor {
-    font-size: 1.9rem;
+.kpi-valor {
+    font-size: 1.85rem;
     font-weight: 700;
-    margin-bottom: .25rem;
+    line-height: 1.15;
+    margin: 0 0 .35rem;
     white-space: nowrap;
 }
 
-.metrica .valor small {
-    font-size: 1rem;
-    font-weight: 400;
+.kpi-valor small {
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--pico-muted-color);
+}
+
+.kpi-nota {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--pico-muted-color);
 }
 
 .filtro {
-    margin: .75rem 0 0;
+    margin: auto 0 0;
+    padding-top: .5rem;
 }
 
 .filtro select {
     margin: 0;
+    font-size: .9rem;
+    padding-top: .45rem;
+    padding-bottom: .45rem;
 }
 
-@media (min-width: 768px) {
-    .grid-dashboard {
-        grid-template-columns: 1fr 2fr;
+/* Barra empilhada LEVE x PESADO */
+.barra-empilhada {
+    display: flex;
+    gap: 3px;
+    height: .6rem;
+    margin: .5rem 0 .75rem;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--pico-muted-border-color);
+}
+
+.seg-LEVE { background: var(--lt-leve); }
+.seg-PESADO { background: var(--lt-pesado); }
+
+.legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem 1rem;
+    margin: 0;
+    padding: 0;
+    font-size: .85rem;
+}
+
+.legenda li {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    list-style: none;
+    margin: 0;
+}
+
+.legenda small {
+    color: var(--pico-muted-color);
+}
+
+.ponto {
+    width: .6rem;
+    height: .6rem;
+    border-radius: 50%;
+}
+
+/* ==========================================================================
+   Dashboard: próximas manutenções
+   ========================================================================== */
+.painel {
+    margin: 0;
+    padding: 1.25rem;
+}
+
+.painel-topo {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: -1.25rem -1.25rem 0;
+    padding: 1rem 1.25rem;
+}
+
+.painel-topo h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.ver-todas {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-size: .9rem;
+}
+
+.ver-todas .ico {
+    width: 1rem;
+    height: 1rem;
+}
+
+.vazio {
+    margin: 1rem 0 0;
+    color: var(--pico-muted-color);
+}
+
+.agenda {
+    margin: 0;
+    padding: 0;
+}
+
+.agenda li {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.agenda li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.data-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: .65rem;
+    background: var(--lt-destaque-suave);
+    color: var(--lt-destaque);
+    line-height: 1.1;
+}
+
+.data-chip strong {
+    font-size: 1.15rem;
+}
+
+.data-chip span {
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.agenda-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.agenda-info small {
+    color: var(--pico-muted-color);
+}
+
+.placa {
+    font-family: var(--pico-font-family-monospace);
+    font-size: .8rem;
+    margin-right: .35rem;
+    color: var(--pico-color);
+}
+
+.quando {
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .15rem .6rem;
+    border-radius: 999px;
+    background: var(--pico-muted-border-color);
+    white-space: nowrap;
+}
+
+.quando.hoje {
+    background: var(--lt-hoje-fundo);
+    color: var(--lt-hoje);
+}
+
+.agenda-custo {
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: right;
+    min-width: 7rem;
+}
+
+@media (max-width: 576px) {
+    .agenda li {
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .agenda .quando {
+        display: none;
+    }
+
+    .agenda-custo {
+        min-width: 0;
     }
 }
 
-.categoria-rotulo {
-    display: flex;
-    justify-content: space-between;
-}
-
-.categoria progress {
-    margin-bottom: 1rem;
-}
-
-.sair {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin: 0;
-}
-
-.sair button {
-    padding: .2rem .7rem;
-    font-size: .85rem;
-    margin: 0;
-}
-
+/* ==========================================================================
+   Login
+   ========================================================================== */
 .login {
     max-width: 420px;
     padding-top: 10vh;
 }
 
-.sair small {
-    margin: 0;
+.login .marca {
+    margin-bottom: .25rem;
+}
+
+/* Celular: o menu quebra em duas linhas e o nome do usuário some */
+@media (max-width: 576px) {
+    .topo nav {
+        flex-wrap: wrap;
+    }
+
+    .sair .usuario {
+        display: none;
+    }
 }

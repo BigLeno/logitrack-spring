@@ -10,5 +10,6 @@ public record ProximaManutencao(
         LocalDate dataInicio,
         LocalDate dataFinalizacao,
         String tipoServico,
-        BigDecimal custoEstimado) {
+        BigDecimal custoEstimado,
+        int diasAte) {
 }

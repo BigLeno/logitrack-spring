@@ -41,7 +41,8 @@ public class DashboardRepository {
 
     private static final String PROXIMAS_MANUTENCOES = """
             SELECT m.id, v.placa, v.modelo, m.data_inicio, m.data_finalizacao,
-                   m.tipo_servico, m.custo_estimado
+                   m.tipo_servico, m.custo_estimado,
+                   m.data_inicio - CURRENT_DATE AS dias_ate
             FROM manutencoes m
             JOIN veiculos v ON v.id = m.veiculo_id
             WHERE m.status = 'PENDENTE'
@@ -99,7 +100,8 @@ public class DashboardRepository {
                 rs.getObject("data_inicio", LocalDate.class),
                 rs.getObject("data_finalizacao", LocalDate.class),
                 rs.getString("tipo_servico"),
-                rs.getBigDecimal("custo_estimado")), limite);
+                rs.getBigDecimal("custo_estimado"),
+                rs.getInt("dias_ate")), limite);
     }
 
     public Optional<VeiculoKm> veiculoMaisRodado() {

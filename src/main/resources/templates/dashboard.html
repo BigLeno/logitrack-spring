@@ -2,15 +2,24 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: nav}"></header>
+<header th:replace="~{fragments/layout :: nav('dashboard')}"></header>
 
 <main class="container">
-    <h1>Dashboard da frota</h1>
+    <div class="cabecalho">
+        <div>
+            <h1>Dashboard da frota</h1>
+            <p class="subtitulo" th:text="${'Visão geral em ' + #temporals.format(#temporals.createToday(), 'd ''de'' MMMM ''de'' yyyy')}">
+                Visão geral</p>
+        </div>
+    </div>
 
-    <div class="grid">
-        <article class="metrica">
-            <header>Total de KM percorrido</header>
-            <p class="valor">
+    <section class="kpis">
+        <article class="kpi">
+            <div class="kpi-topo">
+                <span class="kpi-icone"><svg th:replace="~{fragments/icones :: velocimetro}"></svg></span>
+                <span class="kpi-rotulo">KM percorrido</span>
+            </div>
+            <p class="kpi-valor">
                 <span th:text="${#numbers.formatDecimal(dados.totalKm, 1, 'POINT', 2, 'COMMA')}">0,00</span>
                 <small>km</small>
             </p>
@@ -24,63 +33,82 @@
             </form>
         </article>
 
-        <article class="metrica">
-            <header>Projeção financeira do mês</header>
-            <p class="valor" th:text="${'R$ ' + #numbers.formatDecimal(dados.custoPrevistoMes, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</p>
-            <small th:text="${'Custo estimado das manutenções com início em ' + #temporals.format(#temporals.createToday(), 'MMMM ''de'' yyyy')}">
-                Custo estimado das manutenções do mês</small>
-        </article>
-
-        <article class="metrica">
-            <header>Veículo com mais KM</header>
-            <th:block th:if="${dados.veiculoMaisRodado != null}">
-                <p class="valor" th:text="${dados.veiculoMaisRodado.placa}">ABC-1234</p>
-                <small th:text="${dados.veiculoMaisRodado.modelo + ' · ' + #numbers.formatDecimal(dados.veiculoMaisRodado.kmTotal, 1, 'POINT', 2, 'COMMA') + ' km'}">
-                    Modelo · 0 km</small>
-            </th:block>
-            <p th:if="${dados.veiculoMaisRodado == null}">Nenhuma viagem registrada.</p>
-        </article>
-    </div>
-
-    <div class="grid grid-dashboard">
-        <article>
-            <header>Viagens por categoria</header>
-            <th:block th:with="total=${#aggregates.sum(dados.volumePorCategoria.![totalViagens])}">
-                <div th:each="c : ${dados.volumePorCategoria}" class="categoria">
-                    <div class="categoria-rotulo">
-                        <span th:text="${c.tipo == 'LEVE' ? 'Leve' : 'Pesado'}">Leve</span>
-                        <strong th:text="${c.totalViagens}">0</strong>
-                    </div>
-                    <progress th:value="${c.totalViagens}" th:max="${total > 0 ? total : 1}"></progress>
-                </div>
-            </th:block>
-        </article>
-
-        <article>
-            <header>Próximas manutenções</header>
-            <p th:if="${#lists.isEmpty(dados.proximasManutencoes)}">Nenhuma manutenção pendente agendada.</p>
-            <div class="overflow-auto" th:unless="${#lists.isEmpty(dados.proximasManutencoes)}">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Início</th>
-                        <th>Veículo</th>
-                        <th>Serviço</th>
-                        <th class="numero">Custo</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="m : ${dados.proximasManutencoes}">
-                        <td class="nowrap" th:text="${#temporals.format(m.dataInicio, 'dd/MM/yyyy')}">01/01/2026</td>
-                        <td class="nowrap" th:text="${m.placa}">ABC-1234</td>
-                        <td th:text="${m.tipoServico}">Serviço</td>
-                        <td class="numero nowrap" th:text="${'R$ ' + #numbers.formatDecimal(m.custoEstimado, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <article class="kpi">
+            <div class="kpi-topo">
+                <span class="kpi-icone"><svg th:replace="~{fragments/icones :: carteira}"></svg></span>
+                <span class="kpi-rotulo">Projeção do mês</span>
             </div>
+            <p class="kpi-valor" th:text="${'R$ ' + #numbers.formatDecimal(dados.custoPrevistoMes, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</p>
+            <p class="kpi-nota" th:text="${'Custo estimado das manutenções com início em ' + #temporals.format(#temporals.createToday(), 'MMMM')}">
+                Custo estimado das manutenções do mês</p>
         </article>
-    </div>
+
+        <article class="kpi">
+            <div class="kpi-topo">
+                <span class="kpi-icone"><svg th:replace="~{fragments/icones :: trofeu}"></svg></span>
+                <span class="kpi-rotulo">Veículo com mais KM</span>
+            </div>
+            <th:block th:if="${dados.veiculoMaisRodado != null}">
+                <p class="kpi-valor" th:text="${dados.veiculoMaisRodado.placa}">ABC-1234</p>
+                <p class="kpi-nota" th:text="${dados.veiculoMaisRodado.modelo + ' · ' + #numbers.formatDecimal(dados.veiculoMaisRodado.kmTotal, 1, 'POINT', 2, 'COMMA') + ' km'}">
+                    Modelo · 0 km</p>
+            </th:block>
+            <p class="kpi-nota" th:if="${dados.veiculoMaisRodado == null}">Nenhuma viagem registrada.</p>
+        </article>
+
+        <article class="kpi">
+            <div class="kpi-topo">
+                <span class="kpi-icone"><svg th:replace="~{fragments/icones :: barras}"></svg></span>
+                <span class="kpi-rotulo">Viagens por categoria</span>
+            </div>
+            <p class="kpi-valor">
+                <span th:text="${dados.totalViagens()}">0</span>
+                <small>viagens</small>
+            </p>
+            <div class="barra-empilhada" role="img"
+                 th:attr="aria-label=${#strings.listJoin(dados.volumePorCategoria.![tipo + ': ' + totalViagens], ', ')}">
+                <span th:each="c : ${dados.volumePorCategoria}" th:class="'seg seg-' + ${c.tipo}"
+                      th:style="'flex-grow:' + ${c.totalViagens}"></span>
+            </div>
+            <ul class="legenda">
+                <li th:each="c : ${dados.volumePorCategoria}">
+                    <span th:class="'ponto seg-' + ${c.tipo}"></span>
+                    <span th:text="${c.tipo == 'LEVE' ? 'Leve' : 'Pesado'}">Leve</span>
+                    <strong th:text="${c.totalViagens}">0</strong>
+                    <small th:text="${'(' + dados.percentual(c) + '%)'}">(0%)</small>
+                </li>
+            </ul>
+        </article>
+    </section>
+
+    <article class="painel">
+        <header class="painel-topo">
+            <span class="kpi-icone"><svg th:replace="~{fragments/icones :: calendario}"></svg></span>
+            <h2>Próximas manutenções</h2>
+            <a th:href="@{/manutencoes}" class="ver-todas">Ver todas <svg th:replace="~{fragments/icones :: seta}"></svg></a>
+        </header>
+
+        <p class="vazio" th:if="${#lists.isEmpty(dados.proximasManutencoes)}">Nenhuma manutenção pendente agendada.</p>
+
+        <ul class="agenda" th:unless="${#lists.isEmpty(dados.proximasManutencoes)}">
+            <li th:each="m : ${dados.proximasManutencoes}">
+                <div class="data-chip">
+                    <strong th:text="${#temporals.format(m.dataInicio, 'dd')}">10</strong>
+                    <span th:text="${#strings.replace(#temporals.format(m.dataInicio, 'MMM'), '.', '')}">out</span>
+                </div>
+                <div class="agenda-info">
+                    <strong th:text="${m.tipoServico}">Serviço</strong>
+                    <small>
+                        <span class="placa" th:text="${m.placa}">ABC-1234</span>
+                        <span th:text="${m.modelo}">Modelo</span>
+                    </small>
+                </div>
+                <span class="quando" th:classappend="${m.diasAte == 0} ? 'hoje'"
+                      th:text="${m.diasAte == 0 ? 'hoje' : (m.diasAte == 1 ? 'amanhã' : 'em ' + m.diasAte + ' dias')}">em 3 dias</span>
+                <span class="agenda-custo" th:text="${'R$ ' + #numbers.formatDecimal(m.custoEstimado, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</span>
+            </li>
+        </ul>
+    </article>
 </main>
 </body>
 </html>
