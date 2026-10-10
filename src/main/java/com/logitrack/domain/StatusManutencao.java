@@ -34,6 +34,11 @@ public enum StatusManutencao {
         };
     }
 
+    /** Manutenção concluída é histórico (custo e cronograma realizados): não pode ser excluída. */
+    public boolean permiteExclusao() {
+        return this != CONCLUIDA;
+    }
+
     public List<StatusManutencao> statusAlcancaveis() {
         return Arrays.stream(values()).filter(this::podeMudarPara).toList();
     }

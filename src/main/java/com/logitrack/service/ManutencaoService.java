@@ -69,7 +69,12 @@ public class ManutencaoService {
 
     @Transactional
     public void excluir(Integer id) {
-        manutencaoRepository.delete(buscar(id));
+        Manutencao manutencao = buscar(id);
+        if (!manutencao.getStatus().permiteExclusao()) {
+            throw new RegraNegocioException("status",
+                    "Manutenções concluídas fazem parte do histórico e não podem ser excluídas");
+        }
+        manutencaoRepository.delete(manutencao);
     }
 
     private Manutencao buscar(Integer id) {

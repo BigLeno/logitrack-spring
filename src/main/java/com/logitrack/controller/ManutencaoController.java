@@ -85,8 +85,12 @@ public class ManutencaoController {
 
     @PostMapping("/{id}/excluir")
     public String excluir(@PathVariable Integer id, RedirectAttributes redirect) {
-        manutencaoService.excluir(id);
-        redirect.addFlashAttribute("mensagem", "Manutenção excluída.");
+        try {
+            manutencaoService.excluir(id);
+            redirect.addFlashAttribute("mensagem", "Manutenção excluída.");
+        } catch (RegraNegocioException e) {
+            redirect.addFlashAttribute("erro", e.getMessage());
+        }
         return "redirect:/manutencoes";
     }
 

@@ -10,7 +10,7 @@
         <a role="button" th:href="@{/manutencoes/nova}" data-modal>Agendar manutenção</a>
     </div>
 
-    <div th:replace="~{fragments/layout :: mensagem}"></div>
+    <th:block th:replace="~{fragments/layout :: mensagem}"></th:block>
 
     <p th:if="${#lists.isEmpty(manutencoes)}">Nenhuma manutenção cadastrada.</p>
 
@@ -44,7 +44,9 @@
                            title="Editar" aria-label="Editar" data-modal>
                             <svg th:replace="~{fragments/icones :: lapis}"></svg>
                         </a>
-                        <form method="post" th:action="@{/manutencoes/{id}/excluir(id=${m.id})}"
+                        <!-- concluídas são histórico: sem botão de excluir (o service também bloqueia) -->
+                        <form th:if="${m.status.permiteExclusao()}"
+                              method="post" th:action="@{/manutencoes/{id}/excluir(id=${m.id})}"
                               data-confirmar="Excluir manutenção?"
                               th:attr="data-detalhe=${m.tipoServico + ' · ' + m.placa + ' · ' + #temporals.format(m.dataInicio, 'dd/MM/yyyy')}">
                             <button type="submit" class="secondary outline icone" title="Excluir" aria-label="Excluir">

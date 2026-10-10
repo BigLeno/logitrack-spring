@@ -54,7 +54,11 @@
     </nav>
 </header>
 
-<div th:fragment="mensagem" th:if="${mensagem}" class="alerta-sucesso" role="status" th:text="${mensagem}"></div>
+<!-- Mensagens de retorno (flash attributes) após um redirect -->
+<th:block th:fragment="mensagem">
+    <div th:if="${mensagem}" class="alerta-sucesso" role="status" th:text="${mensagem}"></div>
+    <div th:if="${erro}" class="alerta alerta-erro" role="alert" th:text="${erro}"></div>
+</th:block>
 
 <!-- Marca no topo da tela de login -->
 <div th:fragment="marca-acesso" class="acesso-marca">

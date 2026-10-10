@@ -159,7 +159,7 @@ src/main/resources
 | POST | `/manutencoes` | Cria |
 | GET | `/manutencoes/{id}/editar` | Formulário de edição |
 | POST | `/manutencoes/{id}` | Atualiza |
-| POST | `/manutencoes/{id}/excluir` | Exclui |
+| POST | `/manutencoes/{id}/excluir` | Exclui (bloqueado para manutenções concluídas) |
 | POST | `/logout` | Encerra a sessão |
 
 ---
@@ -299,6 +299,7 @@ WHERE data_inicio >= date_trunc('month', CURRENT_DATE)::date
 
   Nada sai de `CONCLUIDA`, e também não é possível voltar para `PENDENTE`. A tela de edição só oferece os status alcançáveis a partir do atual. Mesmo assim, o `ManutencaoService` valida a transição no servidor, porque o HTML pode ser manipulado. Uma transição proibida aparece como erro no campo de status.
 - **Na criação**, qualquer status é aceito, para permitir registrar uma manutenção que já aconteceu.
+- **Manutenções concluídas não podem ser excluídas:** fazem parte do histórico, pelo mesmo motivo do `ON DELETE RESTRICT`. Apagar uma concluída mudaria retroativamente o custo realizado e a projeção do mês. A lista não mostra o botão de excluir para elas, e o `ManutencaoService` recusa a exclusão mesmo que alguém envie o POST direto. Nesse caso, a lista exibe a mensagem de erro.
 
 ---
 
