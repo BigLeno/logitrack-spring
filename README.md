@@ -83,14 +83,17 @@ docker compose up -d db      # só o banco
 
 ## Telas
 
-<!-- Adicione as imagens em docs/prints/ e descomente as linhas abaixo. -->
+### Dashboard
+![Dashboard com as 5 métricas](docs/prints/dashboard.png)
 
-| Tela | Print |
-|---|---|
-| Login | <!-- ![Login](docs/prints/login.png) --> |
-| Dashboard | <!-- ![Dashboard](docs/prints/dashboard.png) --> |
-| Lista de manutenções | <!-- ![Manutenções](docs/prints/manutencoes.png) --> |
-| Formulário com erros de validação | <!-- ![Formulário](docs/prints/formulario.png) --> |
+### Manutenções
+![Lista de manutenções](docs/prints/manutencoes.png)
+
+### Formulário com erros de validação
+![Formulário de agendamento exibindo erros ao lado dos campos](docs/prints/formulario.png)
+
+### Login
+![Tela de login](docs/prints/login.png)
 
 ---
 
