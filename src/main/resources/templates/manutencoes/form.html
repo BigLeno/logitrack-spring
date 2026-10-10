@@ -4,61 +4,76 @@
 <body>
 <header th:replace="~{fragments/layout :: nav('manutencoes')}"></header>
 
-<main class="container">
-    <h1 th:text="${manutencaoId == null ? 'Agendar manutenção' : 'Editar manutenção'}">Agendar manutenção</h1>
+<main class="container pagina-form">
+    <a th:href="@{/manutencoes}" class="voltar">← Manutenções</a>
 
-    <form method="post" novalidate th:object="${form}"
-          th:action="${manutencaoId == null} ? @{/manutencoes} : @{/manutencoes/{id}(id=${manutencaoId})}">
+    <!-- Este cartão também é carregado dentro do modal da listagem (static/js/app.js) -->
+    <article class="cartao-form">
+        <header class="cartao-form-topo">
+            <span class="kpi-icone">
+                <th:block th:if="${manutencaoId == null}"><svg th:replace="~{fragments/icones :: calendario}"></svg></th:block>
+                <th:block th:unless="${manutencaoId == null}"><svg th:replace="~{fragments/icones :: lapis}"></svg></th:block>
+            </span>
+            <div>
+                <h2 th:text="${manutencaoId == null ? 'Agendar manutenção' : 'Editar manutenção'}">Agendar manutenção</h2>
+                <p class="subtitulo" th:text="${manutencaoId == null ? 'Preencha os dados do serviço a ser realizado.' : 'Altere os dados e salve.'}">
+                    Preencha os dados do serviço.</p>
+            </div>
+        </header>
 
-        <label for="veiculoId">Veículo
-            <select th:field="*{veiculoId}" th:aria-invalid="${#fields.hasErrors('veiculoId')} ? 'true' : null">
-                <option value="">Selecione…</option>
-                <option th:each="v : ${veiculos}" th:value="${v.id}" th:text="${v.descricao}">ABC-1234 — Modelo</option>
-            </select>
-            <small class="erro-campo" th:if="${#fields.hasErrors('veiculoId')}" th:errors="*{veiculoId}"></small>
-        </label>
+        <form method="post" novalidate th:object="${form}" th:attr="data-sucesso=@{/manutencoes}"
+              th:action="${manutencaoId == null} ? @{/manutencoes} : @{/manutencoes/{id}(id=${manutencaoId})}">
 
-        <div class="grid">
-            <label for="dataInicio">Data de início
-                <input type="date" th:field="*{dataInicio}"
-                       th:aria-invalid="${#fields.hasErrors('dataInicio')} ? 'true' : null">
-                <small class="erro-campo" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></small>
-            </label>
-
-            <label for="dataFinalizacao">Finalização prevista
-                <input type="date" th:field="*{dataFinalizacao}"
-                       th:aria-invalid="${#fields.hasErrors('dataFinalizacao') or #fields.hasErrors('periodoValido')} ? 'true' : null">
-                <small class="erro-campo" th:if="${#fields.hasErrors('dataFinalizacao')}" th:errors="*{dataFinalizacao}"></small>
-                <small class="erro-campo" th:if="${#fields.hasErrors('periodoValido')}" th:errors="*{periodoValido}"></small>
-            </label>
-        </div>
-
-        <label for="tipoServico">Tipo de serviço
-            <input type="text" th:field="*{tipoServico}" maxlength="100" placeholder="Ex.: Troca de óleo"
-                   th:aria-invalid="${#fields.hasErrors('tipoServico')} ? 'true' : null">
-            <small class="erro-campo" th:if="${#fields.hasErrors('tipoServico')}" th:errors="*{tipoServico}"></small>
-        </label>
-
-        <div class="grid">
-            <label for="custoEstimado">Custo estimado (R$)
-                <input type="number" step="0.01" min="0" th:field="*{custoEstimado}"
-                       th:aria-invalid="${#fields.hasErrors('custoEstimado')} ? 'true' : null">
-                <small class="erro-campo" th:if="${#fields.hasErrors('custoEstimado')}" th:errors="*{custoEstimado}"></small>
-            </label>
-
-            <label for="status">Status
-                <select th:field="*{status}" th:aria-invalid="${#fields.hasErrors('status')} ? 'true' : null">
-                    <option th:each="s : ${opcoesStatus}" th:value="${s}" th:text="${s.descricao}">Pendente</option>
+            <label for="veiculoId">Veículo
+                <select th:field="*{veiculoId}" th:aria-invalid="${#fields.hasErrors('veiculoId')} ? 'true' : null">
+                    <option value="">Selecione…</option>
+                    <option th:each="v : ${veiculos}" th:value="${v.id}" th:text="${v.descricao}">ABC-1234 — Modelo</option>
                 </select>
-                <small class="erro-campo" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></small>
+                <small class="erro-campo" th:if="${#fields.hasErrors('veiculoId')}" th:errors="*{veiculoId}"></small>
             </label>
-        </div>
 
-        <div class="grid">
-            <button type="submit">Salvar</button>
-            <a role="button" class="secondary outline" th:href="@{/manutencoes}">Cancelar</a>
-        </div>
-    </form>
+            <label for="tipoServico">Tipo de serviço
+                <input type="text" th:field="*{tipoServico}" maxlength="100" placeholder="Ex.: Troca de óleo"
+                       th:aria-invalid="${#fields.hasErrors('tipoServico')} ? 'true' : null">
+                <small class="erro-campo" th:if="${#fields.hasErrors('tipoServico')}" th:errors="*{tipoServico}"></small>
+            </label>
+
+            <div class="grid">
+                <label for="dataInicio">Data de início
+                    <input type="date" th:field="*{dataInicio}"
+                           th:aria-invalid="${#fields.hasErrors('dataInicio')} ? 'true' : null">
+                    <small class="erro-campo" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></small>
+                </label>
+
+                <label for="dataFinalizacao">Finalização prevista
+                    <input type="date" th:field="*{dataFinalizacao}"
+                           th:aria-invalid="${#fields.hasErrors('dataFinalizacao') or #fields.hasErrors('periodoValido')} ? 'true' : null">
+                    <small class="erro-campo" th:if="${#fields.hasErrors('dataFinalizacao')}" th:errors="*{dataFinalizacao}"></small>
+                    <small class="erro-campo" th:if="${#fields.hasErrors('periodoValido')}" th:errors="*{periodoValido}"></small>
+                </label>
+            </div>
+
+            <div class="grid">
+                <label for="custoEstimado">Custo estimado (R$)
+                    <input type="number" step="0.01" min="0" th:field="*{custoEstimado}" placeholder="0,00"
+                           th:aria-invalid="${#fields.hasErrors('custoEstimado')} ? 'true' : null">
+                    <small class="erro-campo" th:if="${#fields.hasErrors('custoEstimado')}" th:errors="*{custoEstimado}"></small>
+                </label>
+
+                <label for="status">Status
+                    <select th:field="*{status}" th:aria-invalid="${#fields.hasErrors('status')} ? 'true' : null">
+                        <option th:each="s : ${opcoesStatus}" th:value="${s}" th:text="${s.descricao}">Pendente</option>
+                    </select>
+                    <small class="erro-campo" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></small>
+                </label>
+            </div>
+
+            <footer class="cartao-form-rodape">
+                <a role="button" class="secondary outline" th:href="@{/manutencoes}" data-cancelar>Cancelar</a>
+                <button type="submit">Salvar</button>
+            </footer>
+        </form>
+    </article>
 </main>
 </body>
 </html>

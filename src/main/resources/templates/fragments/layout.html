@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css">
     <link rel="stylesheet" th:href="@{/css/app.css}">
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <script defer th:src="@{/js/app.js}"></script>
 </head>
 <body>
 
@@ -27,16 +28,55 @@
             <li><a th:href="@{/manutencoes}" th:classappend="${ativo == 'manutencoes'} ? 'ativo'"
                    th:attr="aria-current=${ativo == 'manutencoes'} ? 'page'">Manutenções</a></li>
             <li sec:authorize="isAuthenticated()">
-                <form method="post" th:action="@{/logout}" class="sair">
-                    <span class="usuario" sec:authentication="name">usuário</span>
-                    <button type="submit" class="secondary outline">Sair</button>
-                </form>
+                <details class="menu-usuario">
+                    <summary aria-label="Menu do usuário">
+                        <span class="avatar" th:text="${#strings.toUpperCase(#strings.substring(#authentication.name, 0, 1))}">G</span>
+                    </summary>
+                    <div class="menu-painel">
+                        <div class="menu-cabecalho">
+                            <span class="avatar avatar-pequeno"
+                                  th:text="${#strings.toUpperCase(#strings.substring(#authentication.name, 0, 1))}">G</span>
+                            <div class="menu-identidade">
+                                <strong sec:authentication="name">usuário</strong>
+                                <small sec:authorize="hasRole('GESTOR')">Gestor de frota</small>
+                            </div>
+                        </div>
+                        <form method="post" th:action="@{/logout}">
+                            <button type="submit" class="menu-item menu-sair">
+                                <svg th:replace="~{fragments/icones :: sair}"></svg>
+                                Sair
+                            </button>
+                        </form>
+                    </div>
+                </details>
             </li>
         </ul>
     </nav>
 </header>
 
 <div th:fragment="mensagem" th:if="${mensagem}" class="alerta-sucesso" role="status" th:text="${mensagem}"></div>
+
+<!-- Modais usados pelo static/js/app.js -->
+<th:block th:fragment="dialogos">
+    <dialog id="dialogo-confirmacao" class="dialogo-confirmacao" aria-labelledby="confirmacao-titulo">
+        <article>
+            <div class="confirmacao-corpo">
+                <span class="confirmacao-icone"><svg th:replace="~{fragments/icones :: lixeira}"></svg></span>
+                <div>
+                    <h3 id="confirmacao-titulo" data-titulo>Confirmar?</h3>
+                    <p class="confirmacao-detalhe" data-detalhe></p>
+                    <p class="confirmacao-aviso">Esta ação não pode ser desfeita.</p>
+                </div>
+            </div>
+            <footer>
+                <button type="button" class="secondary outline" data-fechar>Cancelar</button>
+                <button type="button" class="botao-perigo" data-confirmar-acao>Excluir</button>
+            </footer>
+        </article>
+    </dialog>
+
+    <dialog id="dialogo-formulario" class="dialogo-formulario" aria-label="Formulário"></dialog>
+</th:block>
 
 </body>
 </html>

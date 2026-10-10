@@ -89,8 +89,8 @@ docker compose up -d db      # só o banco
 ### Manutenções
 ![Lista de manutenções](docs/prints/manutencoes.png)
 
-### Formulário com erros de validação
-![Formulário de agendamento exibindo erros ao lado dos campos](docs/prints/formulario.png)
+### Formulário (modal) com erros de validação
+![Modal de agendamento exibindo erros ao lado dos campos](docs/prints/formulario.png)
 
 ### Login
 ![Tela de login](docs/prints/login.png)
@@ -322,10 +322,10 @@ O escopo é um MVP com um CRUD e um painel. Páginas renderizadas no servidor pe
 - validação exibida no formulário sem uma API intermediária;
 - CSRF e sessão resolvidos pelo Spring Security sem configuração extra.
 
-Um SPA dobraria a infraestrutura (build de front, API REST, CORS, autenticação por token) sem ganho para o usuário neste estágio. As camadas de service e DTO já isolam a regra de negócio, então expor uma API REST no futuro é acrescentar controllers, não reescrever.
+Um SPA dobraria a infraestrutura (build de front, API REST, CORS, autenticação por token) sem ganho para o usuário neste estágio. Onde a interatividade ajuda (formulário em modal, confirmação de exclusão, indicadores de carregamento), um JavaScript pequeno e sem framework reaproveita o HTML que o próprio servidor renderiza. As camadas de service e DTO já isolam a regra de negócio, então expor uma API REST no futuro é acrescentar controllers, não reescrever.
 
 ### Spring Security com usuário em memória
-Login por formulário, senha com hash BCrypt e CSRF ligado. Toda rota exige autenticação, exceto `/login`, `/css/**` e `/error`, então uma rota nova já nasce protegida. Logout e exclusões são POST com token. Para ter vários usuários, basta trocar o bean `UserDetailsService` por uma implementação que leia de uma tabela.
+Login por formulário, senha com hash BCrypt e CSRF ligado. Toda rota exige autenticação, exceto `/login`, os arquivos estáticos (`/css/**`, `/js/**`, favicon) e `/error`, então uma rota nova já nasce protegida. Logout e exclusões são POST com token. Para ter vários usuários, basta trocar o bean `UserDetailsService` por uma implementação que leia de uma tabela.
 
 ### Fuso horário fixo
 As métricas usam `CURRENT_DATE`, calculado no fuso da sessão do PostgreSQL. O driver JDBC define esse fuso a partir do fuso da JVM, e uma JVM em container roda em UTC por padrão. Sem ajuste, depois das 21h (horário de Brasília) o dashboard consideraria o dia seguinte. Por isso:
@@ -340,6 +340,13 @@ As métricas usam `CURRENT_DATE`, calculado no fuso da sessão do PostgreSQL. O 
 ### Outros detalhes
 - **N+1 evitado:** a listagem de manutenções usa `@EntityGraph` para trazer o veículo no mesmo SELECT.
 - **Post/Redirect/Get:** depois de salvar, um F5 não reenvia o formulário.
+- **Modais com melhoria progressiva** ([app.js](src/main/resources/static/js/app.js)):
+  - O formulário de manutenção abre num modal: o JavaScript busca a mesma página renderizada pelo servidor e envia o formulário por `fetch`.
+  - Erros de validação voltam do servidor e aparecem no próprio modal; com sucesso, a resposta é o redirect de sempre.
+  - A exclusão pede confirmação num modal que mostra qual manutenção será apagada.
+  - Sem JavaScript, tudo funciona por páginas e formulários normais, e a validação continua 100% no servidor.
+- **Feedback de carregamento:** barra de progresso no topo durante a navegação, e spinner com o botão desabilitado durante o envio (evita envio duplo).
+- **Tema claro e escuro:** segue a preferência do sistema operacional.
 - **Arquivos estáticos versionados por hash de conteúdo** (`app-<hash>.css`): o navegador nunca usa um CSS antigo do cache.
 - **`.gitattributes`:** força LF em `mvnw` e `Dockerfile`, para o build no container funcionar a partir de um checkout no Windows.
 

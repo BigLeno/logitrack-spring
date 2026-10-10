@@ -74,22 +74,130 @@ nav a.ativo {
     border-radius: 0;
 }
 
-.sair {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
+/* Menu do usuário: avatar redondo com a inicial que abre um painel */
+.menu-usuario {
+    position: relative;
     margin: 0;
 }
 
-.sair .usuario {
-    font-size: .85rem;
+.menu-usuario > summary {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    list-style: none;
+    cursor: pointer;
+}
+
+.menu-usuario > summary::-webkit-details-marker {
+    display: none;
+}
+
+.menu-usuario > summary::after {
+    display: none;
+}
+
+.menu-usuario[open] > summary {
+    margin-bottom: 0;
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    font-weight: 700;
+    background: var(--pico-primary-background);
+    color: var(--pico-primary-inverse);
+    box-shadow: 0 0 0 2px var(--pico-background-color), 0 0 0 4px var(--pico-muted-border-color);
+    transition: box-shadow .15s;
+}
+
+.menu-usuario > summary:hover .avatar,
+.menu-usuario[open] > summary .avatar {
+    box-shadow: 0 0 0 2px var(--pico-background-color), 0 0 0 4px var(--pico-primary-background);
+}
+
+.menu-painel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + .75rem);
+    z-index: 10;
+    min-width: 15rem;
+    padding: .5rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: .75rem;
+    background: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
+}
+
+.menu-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem .5rem .85rem;
+    margin-bottom: .5rem;
+    border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.avatar-pequeno {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: .9rem;
+    box-shadow: none;
+}
+
+.menu-identidade {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.menu-identidade strong {
+    font-size: .95rem;
+    color: var(--pico-h1-color);
+}
+
+.menu-identidade small {
+    font-size: .8rem;
     color: var(--pico-muted-color);
 }
 
-.sair button {
-    padding: .2rem .7rem;
-    font-size: .85rem;
+.menu-painel form {
     margin: 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    width: 100%;
+    margin: 0;
+    padding: .55rem .5rem;
+    border: 0;
+    border-radius: .5rem;
+    background: none;
+    font-size: .95rem;
+    text-align: left;
+    color: var(--pico-color);
+}
+
+.menu-item:hover,
+.menu-item:focus-visible {
+    background: var(--pico-muted-border-color);
+}
+
+.menu-sair {
+    color: var(--pico-del-color);
+}
+
+.menu-sair:hover,
+.menu-sair:focus-visible {
+    background: color-mix(in srgb, var(--pico-del-color) 12%, transparent);
 }
 
 /* ==========================================================================
@@ -452,13 +560,190 @@ td.numero, th.numero {
     margin-bottom: .25rem;
 }
 
-/* Celular: o menu quebra em duas linhas e o nome do usuário some */
+/* Celular: o menu quebra em duas linhas */
 @media (max-width: 576px) {
     .topo nav {
         flex-wrap: wrap;
     }
 
-    .sair .usuario {
-        display: none;
+}
+
+/* ==========================================================================
+   Feedback de carregamento
+   ========================================================================== */
+.barra-carregamento {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 0;
+    height: 3px;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--pico-primary);
+    box-shadow: 0 0 8px var(--pico-primary);
+}
+
+/* cresce rápido no início e desacelera, como quem "espera" a resposta */
+.barra-carregamento.ativa {
+    opacity: 1;
+    width: 85%;
+    transition: width 6s cubic-bezier(.08, .8, .2, 1), opacity .1s;
+}
+
+.barra-carregamento.concluida {
+    opacity: 0;
+    width: 100%;
+    transition: width .2s ease, opacity .3s ease .2s;
+}
+
+/* botões só com ícone: durante o carregamento o spinner do Pico substitui o ícone */
+.icone[aria-busy="true"] svg {
+    display: none;
+}
+
+.icone[aria-busy="true"]::before {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Modais
+   ========================================================================== */
+dialog[open] > article {
+    animation: modal-surgir .18s ease-out;
+}
+
+@keyframes modal-surgir {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(.98);
+    }
+}
+
+/* Confirmação de exclusão */
+.dialogo-confirmacao > article {
+    max-width: 28rem;
+}
+
+.confirmacao-corpo {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.confirmacao-icone {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: .65rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--pico-del-color) 14%, transparent);
+    color: var(--pico-del-color);
+}
+
+.confirmacao-icone .ico {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.confirmacao-corpo h3 {
+    margin: .15rem 0 .4rem;
+    font-size: 1.15rem;
+}
+
+.confirmacao-detalhe {
+    margin: 0 0 .25rem;
+    font-weight: 600;
+}
+
+.confirmacao-aviso {
+    margin: 0;
+    font-size: .9rem;
+    color: var(--pico-muted-color);
+}
+
+.dialogo-confirmacao footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: .6rem;
+}
+
+.dialogo-confirmacao footer button {
+    width: auto;
+    margin: 0;
+}
+
+.botao-perigo {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+}
+
+.botao-perigo:hover,
+.botao-perigo:focus-visible {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    color: #fff;
+}
+
+/* Formulário dentro do modal */
+.dialogo-formulario > article {
+    width: 100%;
+    max-width: 44rem;
+}
+
+/* ==========================================================================
+   Cartão do formulário (página própria e modal)
+   ========================================================================== */
+.pagina-form {
+    max-width: 46rem;
+}
+
+.voltar {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: .9rem;
+    text-decoration: none;
+}
+
+.cartao-form-topo {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+}
+
+.cartao-form-topo h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cartao-form-topo .subtitulo {
+    margin: .1rem 0 0;
+    font-size: .9rem;
+}
+
+.cartao-form-rodape {
+    display: flex;
+    justify-content: flex-end;
+    gap: .75rem;
+    margin-top: .5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--pico-muted-border-color);
+}
+
+.cartao-form-rodape > *,
+.cartao-form-rodape > button[type="submit"] {
+    width: auto;
+    min-width: 8rem;
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .barra-carregamento.ativa,
+    .barra-carregamento.concluida {
+        transition: none;
+    }
+
+    dialog[open] > article {
+        animation: none;
     }
 }

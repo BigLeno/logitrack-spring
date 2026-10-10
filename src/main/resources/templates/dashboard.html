@@ -24,7 +24,7 @@
                 <small>km</small>
             </p>
             <form method="get" th:action="@{/dashboard}" class="filtro">
-                <select name="veiculoId" aria-label="Filtrar por veículo" onchange="this.form.submit()">
+                <select name="veiculoId" aria-label="Filtrar por veículo" onchange="this.form.requestSubmit()">
                     <option value="">Frota inteira</option>
                     <option th:each="v : ${veiculos}" th:value="${v.id}" th:text="${v.descricao}"
                             th:selected="${v.id == dados.veiculoFiltradoId}">ABC-1234 — Modelo</option>
