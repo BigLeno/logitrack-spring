@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Entrar')}"></head>
+<body>
+<main class="container login">
+    <article>
+        <header><strong>LogiTrack</strong> · Gestão de frota</header>
+
+        <p th:if="${param.error}" class="erro-campo" role="alert">Usuário ou senha inválidos.</p>
+        <p th:if="${param.logout}" role="status">Você saiu do sistema.</p>
+
+        <form method="post" th:action="@{/login}">
+            <label for="username">Usuário
+                <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+            </label>
+            <label for="password">Senha
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button type="submit">Entrar</button>
+        </form>
+    </article>
+</main>
+</body>
+</html>
