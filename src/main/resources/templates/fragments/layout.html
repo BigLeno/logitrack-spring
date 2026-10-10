@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · LogiTrack'">LogiTrack</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+
+<header th:fragment="nav" class="container">
+    <nav>
+        <ul>
+            <li><strong>LogiTrack</strong></li>
+        </ul>
+        <ul>
+            <li><a th:href="@{/manutencoes}">Manutenções</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div th:fragment="mensagem" th:if="${mensagem}" class="alerta-sucesso" role="status" th:text="${mensagem}"></div>
+
+</body>
+</html>
