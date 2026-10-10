@@ -67,7 +67,7 @@ Todas as variáveis têm valor padrão. O `docker-compose.yml` já define as nec
 
 | Variável | Padrão | Uso |
 |---|---|---|
-| `DB_URL` | `jdbc:postgresql://localhost:5432/logitrack` | URL JDBC do PostgreSQL |
+| `DB_URL` | `jdbc:postgresql://localhost:5433/logitrack` | URL JDBC do PostgreSQL (no Compose: `jdbc:postgresql://db:5432/logitrack`) |
 | `DB_USER` / `DB_PASSWORD` | `logitrack` / `logitrack` | Credenciais do banco |
 | `APP_USUARIO` / `APP_SENHA` | `gestor` / `logitrack123` | Usuário de acesso ao sistema |
 | `TZ` | `America/Sao_Paulo` (no Compose) | Fuso da JVM; define o "hoje" das métricas ([por quê](#fuso-horário-fixo)) |
@@ -75,9 +75,11 @@ Todas as variáveis têm valor padrão. O `docker-compose.yml` já define as nec
 ### Rodar fora do Docker (desenvolvimento)
 
 ```bash
-docker compose up -d db      # só o banco
+docker compose up -d db      # só o banco, exposto em localhost:5433
 ./mvnw spring-boot:run       # Windows: .\mvnw.cmd spring-boot:run
 ```
+
+O banco do Compose fica na porta **5433** do host, e não na 5432 padrão, para não conflitar com um PostgreSQL já instalado na máquina. Para abrir um psql: `docker compose exec db psql -U logitrack -d logitrack`.
 
 ---
 

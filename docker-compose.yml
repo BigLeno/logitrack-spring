@@ -7,8 +7,10 @@ services:
       POSTGRES_DB: logitrack
       POSTGRES_USER: logitrack
       POSTGRES_PASSWORD: logitrack
+    # Exposto no host na 5433 para não conflitar com um PostgreSQL local já instalado na 5432.
+    # A aplicação no Compose acessa pela rede interna (db:5432).
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
