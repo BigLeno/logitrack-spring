@@ -19,6 +19,10 @@
                 <p class="subtitulo" th:text="${manutencaoId == null ? 'Preencha os dados do serviço a ser realizado.' : 'Altere os dados e salve.'}">
                     Preencha os dados do serviço.</p>
             </div>
+            <!-- visível só no modal; na página própria há o link de voltar -->
+            <a th:href="@{/manutencoes}" class="fechar-cartao" data-cancelar aria-label="Fechar" title="Fechar">
+                <svg th:replace="~{fragments/icones :: fechar}"></svg>
+            </a>
         </header>
 
         <form method="post" novalidate th:object="${form}" th:attr="data-sucesso=@{/manutencoes}"

@@ -202,6 +202,23 @@
     });
 
     // ---------------------------------------------------------------------
+    // Mostrar/ocultar senha (o botão começa oculto e só aparece com JavaScript)
+    // ---------------------------------------------------------------------
+    document.querySelectorAll('[data-alternar-senha]').forEach(function (botao) {
+        botao.hidden = false;
+        botao.addEventListener('click', function () {
+            var campo = botao.parentElement.querySelector('input');
+            var mostrar = campo.type === 'password';
+            campo.type = mostrar ? 'text' : 'password';
+            var rotulo = mostrar ? 'Ocultar senha' : 'Mostrar senha';
+            botao.setAttribute('aria-pressed', String(mostrar));
+            botao.setAttribute('aria-label', rotulo);
+            botao.title = rotulo;
+            campo.focus();
+        });
+    });
+
+    // ---------------------------------------------------------------------
     // Menu do usuário: fecha ao clicar fora
     // ---------------------------------------------------------------------
     document.addEventListener('click', function (e) {

@@ -549,15 +549,203 @@ td.numero, th.numero {
 }
 
 /* ==========================================================================
-   Login
+   Telas de acesso (login e recuperação de senha)
    ========================================================================== */
-.login {
-    max-width: 420px;
-    padding-top: 10vh;
+.acesso {
+    max-width: 26rem;
+    padding-top: 8vh;
+    padding-bottom: 2rem;
 }
 
-.login .marca {
-    margin-bottom: .25rem;
+.acesso-marca {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    margin-bottom: 1.5rem;
+}
+
+.acesso-marca .marca-icone {
+    padding: .5rem;
+    border-radius: .75rem;
+}
+
+.acesso-marca .marca-icone .ico {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.acesso-marca strong {
+    display: block;
+    font-size: 1.35rem;
+    line-height: 1.1;
+    color: var(--pico-h1-color);
+}
+
+.acesso-marca small {
+    color: var(--pico-muted-color);
+}
+
+.acesso-cartao {
+    padding: 2rem;
+}
+
+.acesso-cartao h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.acesso-cartao > .subtitulo {
+    margin: .35rem 0 1.5rem;
+}
+
+.acesso-cartao button[type="submit"] {
+    width: 100%;
+    margin-top: .5rem;
+    margin-bottom: 0;
+}
+
+.acesso-icone {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: .7rem;
+    border-radius: 50%;
+    background: var(--lt-destaque-suave);
+    color: var(--lt-destaque);
+}
+
+.acesso-icone .ico {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.acesso-voltar {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: .9rem;
+    text-decoration: none;
+}
+
+.acesso-reenviar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    margin: 1rem 0 0;
+    font-size: .9rem;
+    color: var(--pico-muted-color);
+}
+
+.nota-demonstracao {
+    margin: 1rem 0 0;
+    font-size: .78rem;
+    color: var(--pico-muted-color);
+}
+
+/* rótulo da senha com o link "Esqueci minha senha" na mesma linha */
+.rotulo-linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: calc(var(--pico-spacing) * .375);
+}
+
+.rotulo-linha label {
+    margin: 0;
+}
+
+.rotulo-linha a {
+    font-size: .85rem;
+}
+
+/* campo de senha com o botão de olho dentro */
+.campo-senha {
+    position: relative;
+}
+
+.campo-senha input {
+    padding-right: 3rem;
+}
+
+.mostrar-senha {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: var(--pico-form-element-height, 3rem);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--pico-muted-color);
+    box-shadow: none;
+}
+
+.mostrar-senha:hover,
+.mostrar-senha:focus-visible {
+    color: var(--pico-primary);
+    background: none;
+}
+
+.mostrar-senha .se-visivel,
+.mostrar-senha[aria-pressed="true"] .se-oculta {
+    display: none;
+}
+
+.mostrar-senha[aria-pressed="true"] .se-visivel {
+    display: inline-flex;
+}
+
+.mostrar-senha .se-oculta {
+    display: inline-flex;
+}
+
+/* código de verificação: dígitos grandes e espaçados */
+.campo-codigo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: .5em;
+    text-align: center;
+    font-family: var(--pico-font-family-monospace);
+}
+
+/* botão com aparência de link ("Reenviar código") */
+.link-botao {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--pico-primary);
+    font-size: inherit;
+    text-decoration: underline;
+}
+
+.link-botao:hover,
+.link-botao:focus-visible {
+    background: none;
+    color: var(--pico-primary-hover);
+}
+
+/* Alertas */
+.alerta {
+    padding: .7rem .9rem;
+    margin-bottom: 1.25rem;
+    border-radius: var(--pico-border-radius);
+    font-size: .92rem;
+}
+
+.alerta-erro {
+    background: color-mix(in srgb, var(--pico-del-color) 13%, transparent);
+    color: var(--pico-del-color);
+}
+
+.alerta-info {
+    background: var(--lt-destaque-suave);
+    color: var(--pico-color);
 }
 
 /* Celular: o menu quebra em duas linhas */
@@ -746,4 +934,33 @@ dialog[open] > article {
     dialog[open] > article {
         animation: none;
     }
+}
+
+.acesso-cartao button.link-botao[type="submit"] {
+    width: auto;
+    margin: 0;
+}
+
+.acesso-cartao .subtitulo strong {
+    color: var(--pico-h1-color);
+}
+
+/* "X" no topo do cartão do formulário: só aparece dentro do modal */
+.fechar-cartao {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-left: auto;
+    padding: .4rem;
+    border-radius: .5rem;
+    color: var(--pico-muted-color);
+}
+
+.fechar-cartao:hover,
+.fechar-cartao:focus-visible {
+    background: var(--pico-muted-border-color);
+    color: var(--pico-h1-color);
+}
+
+.pagina-form .fechar-cartao {
+    display: none;
 }

@@ -56,6 +56,25 @@
 
 <div th:fragment="mensagem" th:if="${mensagem}" class="alerta-sucesso" role="status" th:text="${mensagem}"></div>
 
+<!-- Marca no topo das telas de login e recuperação de senha -->
+<div th:fragment="marca-acesso" class="acesso-marca">
+    <span class="marca-icone"><svg th:replace="~{fragments/icones :: caminhao}"></svg></span>
+    <div>
+        <strong>LogiTrack</strong>
+        <small>Gestão de frota</small>
+    </div>
+</div>
+
+<!-- Campo de senha com botão para mostrar/ocultar (o botão só aparece com JavaScript) -->
+<div th:fragment="campo-senha(id, nome, autocompletar)" class="campo-senha">
+    <input type="password" th:id="${id}" th:name="${nome}" th:attr="autocomplete=${autocompletar}" required>
+    <button type="button" class="mostrar-senha" data-alternar-senha hidden
+            aria-label="Mostrar senha" aria-pressed="false" title="Mostrar senha">
+        <span class="se-oculta"><svg th:replace="~{fragments/icones :: olho}"></svg></span>
+        <span class="se-visivel"><svg th:replace="~{fragments/icones :: olho-fechado}"></svg></span>
+    </button>
+</div>
+
 <!-- Modais usados pelo static/js/app.js -->
 <th:block th:fragment="dialogos">
     <dialog id="dialogo-confirmacao" class="dialogo-confirmacao" aria-labelledby="confirmacao-titulo">

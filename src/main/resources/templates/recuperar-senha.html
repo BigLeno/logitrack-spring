@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Recuperar senha')}"></head>
+<body>
+<main class="container acesso">
+    <div th:replace="~{fragments/layout :: marca-acesso}"></div>
+
+    <!-- Etapa 1: informar usuário ou e-mail -->
+    <article class="acesso-cartao" th:if="${emailMascarado == null}">
+        <span class="acesso-icone"><svg th:replace="~{fragments/icones :: cadeado}"></svg></span>
+        <h1>Recuperar senha</h1>
+        <p class="subtitulo">Informe seu usuário ou e-mail. Enviaremos um código para você criar uma nova senha.</p>
+
+        <div th:if="${erro}" class="alerta alerta-erro" role="alert" th:text="${erro}">Erro</div>
+
+        <form method="post" th:action="@{/recuperar-senha}">
+            <label for="identificacao">Usuário ou e-mail
+                <input type="text" id="identificacao" name="identificacao" autocomplete="username" required autofocus>
+            </label>
+            <button type="submit">Enviar código</button>
+        </form>
+
+        <a th:href="@{/login}" class="acesso-voltar">← Voltar para o login</a>
+    </article>
+
+    <!-- Etapa 2: código enviado por e-mail -->
+    <article class="acesso-cartao" th:if="${emailMascarado != null}">
+        <span class="acesso-icone"><svg th:replace="~{fragments/icones :: envelope}"></svg></span>
+        <h1>Verifique seu e-mail</h1>
+        <p class="subtitulo">
+            Se houver uma conta associada, enviamos um código de 6 dígitos para
+            <strong th:text="${emailMascarado}">ge•••@logitrack.example</strong>.
+            Ele expira em 15 minutos.
+        </p>
+
+        <div th:if="${reenviado}" class="alerta alerta-info" role="status">Enviamos um novo código.</div>
+        <div th:if="${erro}" class="alerta alerta-erro" role="alert" th:text="${erro}">Erro</div>
+
+        <form method="post" th:action="@{/recuperar-senha/codigo}">
+            <input type="hidden" name="identificacao" th:value="${identificacao}">
+            <label for="codigo">Código de verificação
+                <input type="text" id="codigo" name="codigo" class="campo-codigo" inputmode="numeric"
+                       pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000"
+                       required autofocus th:attr="aria-invalid=${erro != null} ? 'true'">
+            </label>
+            <button type="submit">Verificar código</button>
+        </form>
+
+        <form method="post" th:action="@{/recuperar-senha}" class="acesso-reenviar">
+            <input type="hidden" name="identificacao" th:value="${identificacao}">
+            <input type="hidden" name="reenvio" value="true">
+            <span>Não recebeu?</span>
+            <button type="submit" class="link-botao">Reenviar código</button>
+        </form>
+
+        <a th:href="@{/login}" class="acesso-voltar">← Voltar para o login</a>
+        <p class="nota-demonstracao">Ambiente de demonstração: o envio do e-mail é simulado.</p>
+    </article>
+</main>
+</body>
+</html>

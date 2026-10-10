@@ -2,26 +2,30 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Entrar')}"></head>
 <body>
-<main class="container login">
-    <article>
-        <header>
-            <span class="marca">
-                <span class="marca-icone"><svg th:replace="~{fragments/icones :: caminhao}"></svg></span>
-                LogiTrack
-            </span>
-            <p class="subtitulo">Gestão de frota</p>
-        </header>
+<main class="container acesso">
+    <div th:replace="~{fragments/layout :: marca-acesso}"></div>
 
-        <p th:if="${param.error}" class="erro-campo" role="alert">Usuário ou senha inválidos.</p>
-        <p th:if="${param.logout}" role="status">Você saiu do sistema.</p>
+    <article class="acesso-cartao">
+        <h1>Entrar</h1>
+        <p class="subtitulo">Acesse com seu usuário e senha.</p>
+
+        <div th:if="${param.error}" class="alerta alerta-erro" role="alert">Usuário ou senha inválidos.</div>
+        <div th:if="${param.logout}" class="alerta alerta-info" role="status">Você saiu do sistema.</div>
+        <div th:if="${param.recuperacao}" class="alerta alerta-info" role="status">
+            Código verificado. Esta é uma demonstração: a senha não foi alterada, entre com suas credenciais atuais.
+        </div>
 
         <form method="post" th:action="@{/login}">
             <label for="username">Usuário
                 <input type="text" id="username" name="username" autocomplete="username" required autofocus>
             </label>
-            <label for="password">Senha
-                <input type="password" id="password" name="password" autocomplete="current-password" required>
-            </label>
+
+            <div class="rotulo-linha">
+                <label for="password">Senha</label>
+                <a th:href="@{/recuperar-senha}">Esqueci minha senha</a>
+            </div>
+            <div th:replace="~{fragments/layout :: campo-senha('password', 'password', 'current-password')}"></div>
+
             <button type="submit">Entrar</button>
         </form>
     </article>
