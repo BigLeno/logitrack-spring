@@ -78,3 +78,43 @@ td.numero, th.numero {
 .nowrap {
     white-space: nowrap;
 }
+
+.metrica header,
+.grid-dashboard header {
+    font-weight: 600;
+}
+
+.metrica .valor {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: .25rem;
+    white-space: nowrap;
+}
+
+.metrica .valor small {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.filtro {
+    margin: .75rem 0 0;
+}
+
+.filtro select {
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .grid-dashboard {
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.categoria-rotulo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.categoria progress {
+    margin-bottom: 1rem;
+}
