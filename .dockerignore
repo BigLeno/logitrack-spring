@@ -1,0 +1,6 @@
+# Envia ao build apenas o necessário para compilar
+*
+!.mvn/
+!mvnw
+!pom.xml
+!src/

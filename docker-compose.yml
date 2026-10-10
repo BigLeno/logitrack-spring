@@ -1,6 +1,8 @@
 services:
   db:
     image: postgres:16-alpine
+    # Fuso do banco igual ao da aplicação: CURRENT_DATE no psql dá o mesmo dia que no dashboard
+    command: ["postgres", "-c", "timezone=America/Sao_Paulo"]
     environment:
       POSTGRES_DB: logitrack
       POSTGRES_USER: logitrack
@@ -14,6 +16,21 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/logitrack
+      DB_USER: logitrack
+      DB_PASSWORD: logitrack
+      # A JVM em container usa UTC por padrão; o driver JDBC repassa esse fuso para a sessão
+      # do PostgreSQL, e o CURRENT_DATE das métricas viraria "amanhã" depois das 21h.
+      TZ: America/Sao_Paulo
+    ports:
+      - "8080:8080"
 
 volumes:
   db-data:
