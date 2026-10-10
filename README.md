@@ -241,7 +241,8 @@ ORDER BY t.tipo;
 "Agendada" foi interpretado como **status `PENDENTE` com data de início a partir de hoje**. Manutenções em realização ou concluídas já começaram e não entram. A ordenação é por data de início, com o id como desempate estável.
 
 ```sql
-SELECT m.id, v.placa, v.modelo, m.data_inicio, m.data_finalizacao, m.tipo_servico, m.custo_estimado
+SELECT m.id, v.placa, v.modelo, m.data_inicio, m.data_finalizacao, m.tipo_servico, m.custo_estimado,
+       m.data_inicio - CURRENT_DATE AS dias_ate   -- exibido como "hoje", "amanhã", "em N dias"
 FROM manutencoes m
 JOIN veiculos v ON v.id = m.veiculo_id
 WHERE m.status = 'PENDENTE'
